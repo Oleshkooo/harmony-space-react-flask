@@ -1,0 +1,33 @@
+@import '@styles/variables';
+
+.inputContainer {
+    display: flex;
+    flex-direction: column;
+    color: $dark;
+
+    label {
+        font-size: $p;
+        padding-bottom: 8px;
+    }
+
+    input {
+        padding: $container-padding;
+        border: none;
+
+        color: $dark;
+        background: $white;
+        font-size: $h6;
+        box-shadow: $shadow;
+        border-radius: $br-sm;
+        transition: $transition;
+
+        &:focus {
+            outline: 1px solid $dark;
+            box-shadow: $shadow-hover;
+            transition: $transition;
+        }
+        &::placeholder {
+            color: $secondary;
+        }
+    }
+}

@@ -1,0 +1,30 @@
+@import '@styles/variables';
+
+.breadcrumbs {
+    padding-top: $tiles-gap;
+    padding-left: $tiles-gap;
+
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    font-weight: $fw-bold;
+    font-size: $h3;
+    text-shadow: $shadow;
+}
+
+.icon {
+    cursor: pointer;
+    padding-right: 15px;
+    font-size: $h2;
+    transition: $transition;
+
+    &:hover {
+        color: $dark-hover;
+        transition: $transition;
+    }
+    &:active {
+        color: $dark-active;
+        transition: $transition-fast;
+    }
+}

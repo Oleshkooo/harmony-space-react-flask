@@ -1,0 +1,31 @@
+@import '@styles/variables';
+
+.btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+
+    cursor: pointer;
+    border: none;
+    padding: $container-padding;
+
+    color: $light;
+    background: $dark;
+    font-size: $h6;
+    font-weight: $fw-medium;
+    border-radius: $br-sm;
+    box-shadow: $shadow;
+    transition: $transition;
+
+    &:hover {
+        background: $dark-hover;
+        box-shadow: $shadow-hover;
+        transition: $transition;
+    }
+    &:active {
+        background: $dark-active;
+        box-shadow: $shadow-hover;
+        transition: $transition-fast;
+    }
+}

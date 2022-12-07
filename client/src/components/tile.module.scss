@@ -1,0 +1,67 @@
+@import '@styles/variables';
+
+$gap: 15px;
+$padding: 40px 30px;
+
+.tile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    padding: $padding;
+    gap: $gap;
+
+    background: $light;
+    box-shadow: $shadow;
+    border-radius: $br-md;
+    transition: $transition;
+
+
+    &:hover {
+        // background: $light-hover;
+        box-shadow: $shadow-hover;
+        transition: $transition;
+    }
+}
+
+.dark {
+    color: $light;
+    background: $dark;
+    transition: $transition;
+
+    &:hover {
+        // background: $dark-hover;
+        box-shadow: $shadow-hover;
+        transition: $transition;
+    }
+}
+
+.tileImg {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+
+    box-shadow: $shadow;
+    border-radius: $br-md;
+    transition: $transition;
+
+    &:hover {
+        box-shadow: $shadow-hover;
+        transition: $transition;
+    }
+
+    img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        
+        transition: $transition;
+    }
+
+    &:hover img {
+        transform: scale(1.2);
+        transition: $transition;
+    }
+}

@@ -1,0 +1,68 @@
+@import '@styles/variables';
+
+$height: 60px;
+$margin-top: 15px;
+$margin-y: 30px;
+
+.sidebar {
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: $sidebar-width;
+    height: 100vh;
+    top: 0;
+    left: 0;
+    overflow-x: hidden;
+    white-space: nowrap;
+
+    color: $light;
+    background: $dark;
+    transition: $transition;
+    z-index: 9999;
+
+    ul {
+        list-style: none;
+        margin: $margin-y 0;
+
+        li {
+            $spacing-1: 26px;
+            $spacing-2: 35px;
+
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+
+            width: $sidebar-width-max;
+            height: $height;
+            margin-top: $margin-top;
+            padding: 0 $spacing-1;
+
+            &:hover {
+                background: $dark-hover;
+                transition: $transition;
+            }
+            &:active {
+                background: $dark-active;
+                transition: $transition;
+            }
+
+            h1, h2, h3, h4, h5, h6, span, p {
+                display: block;
+                padding-top: 3px;
+                padding-left: $spacing-2;
+                font-weight: $fw-regular;
+            }
+
+            svg {
+                transform: scale(1.5);
+                stroke-width: 1.5;
+            }
+        }
+    }
+}
+
+.open {
+    width: $sidebar-width-max;
+    transition: $transition;
+}

@@ -1,0 +1,17 @@
+@import '@styles/variables';
+
+.link {
+    cursor: pointer;
+    color: $dark;
+    font-weight: $fw-bold;
+    transition: $transition;
+
+    &:hover {
+        color: $dark-hover;
+        transition: $transition;
+    }
+    &:active {
+        color: $dark-active;
+        transition: $transition;
+    }
+}
