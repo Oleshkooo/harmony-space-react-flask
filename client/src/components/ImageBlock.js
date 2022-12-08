@@ -4,9 +4,10 @@ const ImageBlock = ({ img, className = '', ...props }) => {
     return (
         <div
             className={`${s.imgBlock} ${className}`}
+            style={{ backgroundImage: `url(${img})` }}
             {...props}
         >
-            <img src={img} alt="img" />
+            {/* <img src={img} alt="img" /> */}
         </div>
     )
 }

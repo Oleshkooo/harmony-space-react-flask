@@ -7,10 +7,16 @@
 
     overflow: hidden;
 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+
+
     box-shadow: $shadow;
     transition: $transition;
 
     &:hover {
+        background-size: 115%;
         box-shadow: $shadow-hover;
         transition: $transition;
     }

@@ -34,7 +34,7 @@ const Login = () => {
             <div className={s.left}>
                 <Breadcrumbs path={from}>Вхід в обліковий запис</Breadcrumbs>
 
-                <div className={s.login__container}>
+                <div className={s.container}>
                     <Tile className={s.tile}>
                         <h4>Вхід в обліковий запис</h4>
                         <div className={s.inputs}>

@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { Home, LogIn, BookOpen, Info } from 'react-feather'
+import { Home, LogIn, BookOpen, CheckCircle, Info } from 'react-feather'
 
 import s from './sidebar.module.scss'
 
@@ -23,6 +23,16 @@ const Sidebar = () => {
             icon: <BookOpen />,
             path: '/about',
         },
+        {
+            name: 'Тест',
+            icon: <CheckCircle />,
+            path: '/test',
+        },
+        {
+            name: 'Гаряча лінія',
+            icon: <Info />,
+            path: '/hotline',
+        },
     ]
 
     return (
@@ -44,7 +54,7 @@ const Sidebar = () => {
             <ul>
                 <li onClick={() => navigate('/login')}>
                     <LogIn />
-                    <h6>Log In</h6>
+                    <h6>Увійти</h6>
                 </li>
             </ul>
         </nav>

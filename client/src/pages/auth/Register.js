@@ -35,7 +35,7 @@ const Register = () => {
             <div className={s.left}>
                 <Breadcrumbs path={from}>Створення облікового запису</Breadcrumbs>
 
-                <div className={s.login__container}>
+                <div className={s.container}>
                     <Tile className={s.tile}>
                         <h4>Створення облікового запису</h4>
                         <div className={s.inputs}>

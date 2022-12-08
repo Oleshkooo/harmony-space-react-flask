@@ -43,19 +43,26 @@ $padding: 40px 30px;
 
     overflow: hidden;
 
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: 100%;
+
     box-shadow: $shadow;
     border-radius: $br-md;
     transition: $transition;
 
     &:hover {
+        background-size: 120%;
         box-shadow: $shadow-hover;
         transition: $transition;
     }
 
+
     img {
-        width: 100%;
+        max-width: 100%;
         height: 100%;
         object-fit: cover;
+        overflow: hidden;
         
         transition: $transition;
     }

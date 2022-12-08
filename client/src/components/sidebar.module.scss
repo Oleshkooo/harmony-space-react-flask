@@ -16,8 +16,9 @@ $margin-y: 30px;
     overflow-x: hidden;
     white-space: nowrap;
 
-    color: $light;
+    color: $secondary;
     background: $dark;
+    box-shadow: $shadow-small;
     transition: $transition;
     z-index: 9999;
 
@@ -37,12 +38,15 @@ $margin-y: 30px;
             height: $height;
             margin-top: $margin-top;
             padding: 0 $spacing-1;
+            transition: $transition;
 
             &:hover {
+                color: $light;
                 background: $dark-hover;
                 transition: $transition;
             }
             &:active {
+                color: $light;
                 background: $dark-active;
                 transition: $transition;
             }

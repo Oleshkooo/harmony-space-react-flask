@@ -11,7 +11,7 @@ const container = document.getElementById('root')
 const root = createRoot(container)
 
 root.render(
-    <AnimatePresence>
+    <AnimatePresence mode="wait">
         <BrowserRouter>
             <App />
         </BrowserRouter>

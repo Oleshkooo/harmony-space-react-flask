@@ -6,9 +6,10 @@ const Tile = ({ className = '', dark = false, img = '', ...props }) => {
     if (img) return (
         <div
             className={`${s.tileImg} ${className}`}
+            style={{ backgroundImage: `url(${img})` }}
             {...props}
         >
-            <img src={img} alt="img" />
+            {/* <img src={img} alt="img" /> */}
         </div>
     )
 

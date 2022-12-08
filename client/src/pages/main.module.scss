@@ -1,3 +1,5 @@
+@import "@styles/variables";
+
 .tiles {
     padding: $tiles-gap;
 
@@ -31,6 +33,12 @@
 
 .area3 {
     grid-area: area3;
+    
+    P {
+        overflow: hidden;
+        max-height: 90vh;
+        text-overflow: ellipsis;
+    }
 }
 
 .area4 {
@@ -40,7 +48,3 @@
 .area5 {
     grid-area: area5;
 }
-
-
-
-https://i.picsum.photos/id/483/2000/3000.jpg?hmac=ZwWHf5kp6VIY6h699lfQs8kIYz0j9gmbwT3XH0gMyfE

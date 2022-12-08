@@ -6,6 +6,7 @@ import Sidebar from '@components/Sidebar'
 import Main from '@pages/Main'
 import Login from '@pages/auth/Login'
 import Register from '@pages/auth/Register'
+import NotFound from '@pages/auth/NotFound'
 
 const App = () => {
     return (
@@ -23,6 +24,7 @@ const App = () => {
                 />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
+                <Route path="*" element={<NotFound />} />
             </Routes>
         </>
     )

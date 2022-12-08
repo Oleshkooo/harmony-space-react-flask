@@ -17,7 +17,7 @@ $gap-small: 15px;
     height: 100vh;
 }
 
-.login__container {
+.container {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -49,4 +49,20 @@ $gap-small: 15px;
     display: flex;
     flex-direction: column;
     gap: $gap-small;
+}
+
+.header  {
+    display: flex;
+    align-items: center;
+
+    h1, h2, h3, h4, h5, h6, p, span {
+        padding-left: $tiles-gap/2;
+    }
+}
+
+.text {
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: $fw-regular;
+        padding-bottom: 10px;
+    }
 }
