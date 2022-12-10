@@ -36,6 +36,7 @@ $fw-light: 300;
 $font-name: Montserrat;
 $font-style: normal;
 $line-height: 140%;
+$line-height-max: 200%;
 
 $shadow: 0px 5px 30px rgba(0, 0, 0, 0.1);
 $shadow-hover: 5px 10px 30px rgba(0, 0, 0, 0.18);
@@ -49,3 +50,6 @@ $container-padding: 16px 22px;
 
 $sidebar-width: 80px;
 $sidebar-width-max: 230px;
+
+$scale-in-small: 1.05;
+$scale-out-small: 0.95;

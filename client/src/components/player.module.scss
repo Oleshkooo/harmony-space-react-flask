@@ -1,0 +1,91 @@
+@import '@styles/variables';
+
+$gap: 15px;
+$padding: 40px 30px;
+
+.player {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    padding: $padding;
+    gap: $gap;
+
+    background: $light;
+    box-shadow: $shadow;
+    border-radius: $br-md;
+    transition: $transition;
+
+
+    &:hover {
+        // background: $light-hover;
+        box-shadow: $shadow-hover;
+        transition: $transition;
+    }
+
+    .controls {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        max-height: 10vh;
+        min-height: 60px;
+        
+        gap: $gap;
+        transition: $transition;
+
+        .playPause {
+            padding: $gap;
+            border-radius: $br-lg;
+            background: $dark;
+            color: $light;
+            transition: $transition;
+
+            &:hover {
+                background: $dark-hover;
+                // box-shadow: $shadow-hover;
+                scale: $scale-in-small;
+                transition: $transition;
+            }
+            &:active {
+                background: $dark-active;
+                // box-shadow: $shadow-hover;
+                scale: $scale-out-small;
+                transition: $transition;
+            }
+        }
+    }
+}
+
+.dark {
+    color: $light;
+    background: $dark;
+    transition: $transition;
+
+    &:hover {
+        // background: $dark-hover;
+        box-shadow: $shadow-hover;
+        transition: $transition;
+    }
+
+    .controls {
+        .playPause {
+            background: $light;
+            color: $dark;
+            transition: $transition;
+
+            &:hover {
+                background: $light-hover;
+                box-shadow: $shadow-hover;
+                transition: $transition;
+            }
+            &:active {
+                background: $light-active;
+                box-shadow: $shadow-hover;
+                transition: $transition;
+            }
+        }
+    }
+}

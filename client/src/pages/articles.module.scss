@@ -1,0 +1,22 @@
+@import '@styles/variables';
+
+.container {
+    padding: 0 $tiles-gap 2*$tiles-gap $tiles-gap;
+}
+
+.articles {
+    cursor: pointer;
+    margin-top: $tiles-gap;
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: $fw-bold;
+    }
+}
+
+.articlesExact {
+    cursor: auto;
+
+    h1, h2, h3, h4, h5, h6 {
+        padding-bottom: $tiles-gap/4;
+    }
+}

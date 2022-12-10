@@ -1,0 +1,10 @@
+/node_modules
+package.json
+package-lock.json
+/__pycache__
+/assets
+/.git
+.ico
+.png
+.jpg
+.jpeg

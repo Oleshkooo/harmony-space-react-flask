@@ -1,19 +1,43 @@
+import { useEffect } from 'react'
+import { useNavigate, useLocation } from 'react-router-dom'
+import { toast } from 'react-hot-toast'
+
+import useAPI from '@hooks/useAPI'
+
 import Layout from '@components/Layout'
 import Tile from '@components/Tile'
 import Button from '@components/Button'
 
+import limitString from '@utils/limitString'
+
 import s from './main.module.scss'
 
 const Main = () => {
+    const apiData = useAPI()
+   
+    const navigate = useNavigate()
+    const location = useLocation()
+
+    const message = location.state?.message || ''
+
+    const gotoRegister = () => navigate('/register', { state: { from: location } })
+    const gotoArticles = () => navigate('/articles', { state: { from: location } })
+    const gotoTest = () => navigate('/test', { state: { from: location } })
+    const gotoHotline = () => navigate('/hotline', { state: { from: location } })
+
+    useEffect(() => {
+        if (message) {
+            toast.error(message)
+        }
+    }, [message])
+
     return (
         <Layout>
             <div className={s.tiles}>
                 <Tile dark className={s.area1}>
                     <h5>Афірмація дня</h5>
                     <p>
-                        Щоразу, коли ми боїмося, це тому, що ми недостатньо
-                        знаємо. Якби ми достатньо розуміли, ми б ніколи не
-                        боялися
+                        {apiData ? apiData.affirmation : 'Афірмації зараз недостуні'}
                     </p>
                 </Tile>
                 <Tile className={s.area2}>
@@ -22,48 +46,34 @@ const Main = () => {
                         Зареєструйтесь або увійдіть в існуючий обліковий запис
                         для детальнішої інформації про себе
                     </p>
-                    <Button>Зареєструватись</Button>
+                    <Button onClick={gotoRegister}>Зареєструватись</Button>
                 </Tile>
+
                 <Tile className={s.area3}>
-                    <h5>
-                        Маніпуляція людьми – цікаві факти про психологічне
-                        насильство
-                    </h5>
-                    <p>
-                        Маніпуляція людьми в наш час активно використовується,
-                        будьте обережні! Здається, що Ви всюди винні, усюди
-                        недопрацював і переслідує думка: “Я не зможу, у мене не
-                        вийде, я – нікчемний”? Скоріш за все, що вами банально
-                        маніпулюють. <br />
-                        Фізичне насильство – штука категорично неприпустима. А
-                        ось про психологічне насильство мало хто з нас
-                        замислюється. Але моральне придушення – штука ані трохи
-                        не менш серйозна, ніж силова агресія: воно шкодить не
-                        тільки тілу (опосередковано), а перш за все особистості,
-                        позначається на самооцінці, на здатності людини керувати
-                        своїм життям. І якщо на фізичний удар можна відповісти,
-                        то як “дати здачі” тонкому маніпулятору – не зовсім
-                        зрозуміло. <br />
-                        Та й де психологічна агресія, а де “просто здалося”, теж
-                        розібратися нелегко. Є п’ять найбільш поширених методів,
-                        які психологи називають агресією. Якщо ти виявиш якийсь
-                        із них у своїх взаєминах з іншою людиною, знай: це –
-                        воно. Чини опір або біжи. <br />
-                        Термін “газлайтинг” увійшов в наше життя від кіношників:
-                        “Газлайт” (Gaslight, “газова лампа”) – так називався
-                        фільм 1944 року з Інгрід Бергман у головній ролі. За
-                        сюжетом чоловік її героїні хотів прибрати до рук
-                        коштовності дружини. Він розумів, що може зробити це,
-                        тільки якщо дружину визнають неосудною і примусово
-                        покладуть в психіатричну лікарню. <br />
-                        Щоб реалізувати ідею, чоловік встановив в будинку газове
-                        освітлення, зробивши так, щоб в певний момент газові
-                        лампи гасли...
-                    </p>
-                    <Button>Переглянути статті</Button>
+                    {apiData ?
+                        <>
+                            <h5>{apiData.latestArticle.title}</h5>
+                            <p>{limitString(apiData.latestArticle.content, 1500)}</p>
+                            <p>
+                                {apiData.latestArticle.author},{' '}
+                                {new Date(apiData.latestArticle.date).toLocaleDateString('uk-UA', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                })}
+                            </p>
+                            <Button onClick={gotoArticles}>Переглянути статті</Button>
+                        </>
+                    :
+                        <>
+                            <h5>Остання стаття</h5>
+                            <p>Статті зараз недоступні</p>
+                        </>
+                    }
                 </Tile>
-                <Tile className={s.area4}>
-                    <h5>Тест на тривоність</h5>
+
+                {/* <Tile className={s.area4}>
+                    <h5>Тест на тривожність</h5>
                     <p>
                         Спираючись на клінічні дані та дослідження, цей тест
                         визначає Ваш поточний рівень тривожності, стресу та
@@ -82,11 +92,37 @@ const Main = () => {
                         картину поточного рівня тривожності, стресу та депресії
                         респондентів відповідно до стандартизованих показників.
                     </p>
-                    <Button>Пройти тест</Button>
+                    <Button onClick={gotoTest}>Пройти тест</Button>
+                </Tile> */}
+                <Tile className={s.area4}>
+                    <h5>Гаряча лінія</h5>
+                    <p>
+                        Міністерство охорони здоров'я України нагадує, що в
+                        Україні працює «гаряча лінія», спеціалісти якої
+                        допомагають українцям підтримати психічне здоров’я в
+                        умовах постійного стресу й емоційної напруги,
+                        спричинених війною. <br />
+                        <br />
+                        «Гаряча лінія» за номером <b>
+                            0-800-100-102
+                        </b> працює <b>щодня з 10:00 до 20:00</b>. Дзвінки з
+                        України є безоплатними. Консультації надають фахові
+                        психологи з багаторічним досвідом, які попередньо
+                        пройшли спеціальну підготовку для роботи зі складними
+                        кризовими ситуаціями. Лінія працює у двох форматах:
+                        через аудіо- та відеозв’язок. Для отримання відеосеансу
+                        особа, яка звернулася по допомогу, має повідомити про
+                        своє бажання оператору лінії. <br />
+                    </p>
+                    <Button onClick={gotoHotline}>Більше інформації</Button>
                 </Tile>
-                <Tile
+                {/* <Tile
                     className={s.area5}
                     img="https://i.picsum.photos/id/483/2000/3000.jpg?hmac=ZwWHf5kp6VIY6h699lfQs8kIYz0j9gmbwT3XH0gMyfE"
+                ></Tile> */}
+                <Tile
+                    className={s.area5}
+                    img="https://picsum.photos/2000/3000"
                 ></Tile>
             </div>
         </Layout>

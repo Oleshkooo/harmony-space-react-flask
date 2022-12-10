@@ -1,0 +1,25 @@
+@import '@styles/variables';
+
+.container {
+    padding: 0 $tiles-gap 2*$tiles-gap $tiles-gap;
+}
+
+.track {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+
+    margin-top: $tiles-gap;
+    gap: $tiles-gap/2.5;
+
+    h1, h2, h3, h4, h5, h6 {
+        font-weight: $fw-bold;
+    }
+
+    div:first-child {
+        flex: 8;
+    }
+    div:nth-child(2) {
+        flex: 4;
+    }
+}
