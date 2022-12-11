@@ -6,6 +6,7 @@ import { toast } from 'react-hot-toast'
 import { Send } from 'react-feather'
 
 import useAuth from '@hooks/useAuth'
+import useOnEnter from '@hooks/useOnEnter'
 
 import Layout from '@components/Layout'
 import Breadcrumbs from '@components/Breadcrumbs'
@@ -17,10 +18,10 @@ import Message from '../components/Message'
 import s from './chat.module.scss'
 
 const Chat = () => {
-    const socket = io.connect('http://localhost:5000')
+    const { userId } = useAuth()
 
-    const auth = useAuth()
-
+    const [socket, setSocket] = useState(io.connect('http://localhost:5000'))
+    const [connected, setConnected] = useState(false)
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([])
 
@@ -29,22 +30,42 @@ const Chat = () => {
 
     const from = location.state?.from?.pathname || '/'
 
-    const sendMessage = async () => {
+    const handleSubmit = async () => {
         await socket.emit('send_message', {
+            id: userId,
             content: message,
-            room: auth.userId,
+            isFromUser: true,
+            date: Date.now(),
         })
+
+        setMessage('')
     }
+    const renderMessage = (msg, index) => {
+        return (
+            <Message key={index} dark={msg.isFromUser} isFromUser={msg.isFromUser} time={msg.date}>
+                {msg.content}
+            </Message>
+        )
+    }
+
+    useOnEnter(handleSubmit)
+
+    useEffect(() => {
+        if (!connected) {
+            socket.emit('join', userId)
+            setConnected(true)
+        }
+    }, [socket, userId, connected])
 
     useEffect(() => {
         socket.on('recieve_message', data => {
-            console.log('recieve', data)
+            setMessages(prev => [data, ...prev])
         })
     }, [socket])
 
     useEffect(() => {
         const fetchData = async () => {
-            const { data } = await axios.get('/messages')
+            const { data } = await axios.get(`/messages/${userId}`)
 
             if (data?.error) {
                 toast.error(data.error)
@@ -54,7 +75,7 @@ const Chat = () => {
             setMessages(data)
         }
         fetchData()
-    })
+    }, [userId])
 
     return (
         <Layout>
@@ -63,15 +84,20 @@ const Chat = () => {
             <div className={s.container}>
                 <Tile className={s.chat}>
                     <div className={s.messages}>
-                        {!messages.length && <Message>Повідомлень ще немає</Message>}
+                        {!messages.length ? (
+                            <Message renderTime={false}>Повідомлень ще немає</Message>
+                        ) : (
+                            messages.map((item, index) => renderMessage(item, index))
+                        )}
                     </div>
                     <div className={s.controls}>
                         <Input
                             className={s.input}
+                            value={message}
                             setState={setMessage}
                             placeholder="Повідомлення"
                         />
-                        <Button>
+                        <Button onClick={handleSubmit}>
                             <Send />
                         </Button>
                     </div>

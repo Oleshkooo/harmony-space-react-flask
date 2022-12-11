@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 
 import useAPI from '@hooks/useAPI'
+import useAuth from '@hooks/useAuth'
 
 import Layout from '@components/Layout'
 import Tile from '@components/Tile'
@@ -14,6 +15,7 @@ import s from './main.module.scss'
 
 const Main = () => {
     const apiData = useAPI()
+    const auth = useAuth()
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -23,6 +25,7 @@ const Main = () => {
     const gotoRegister = () => navigate('/register', { state: { from: location } })
     const gotoArticles = () => navigate('/articles', { state: { from: location } })
     const gotoHotline = () => navigate('/hotline', { state: { from: location } })
+    const gotoMeditations = () => navigate('/meditations', { state: { from: location } })
     // const gotoTest = () => navigate('/test', { state: { from: location } })
 
     useEffect(() => {
@@ -39,12 +42,26 @@ const Main = () => {
                     <p>{apiData ? apiData.affirmation : 'Афірмації зараз недостуні'}</p>
                 </Tile>
                 <Tile className={s.area2}>
-                    <h5>Вперше на нашому сайті?</h5>
-                    <p>
-                        Зареєструйтесь або увійдіть в існуючий обліковий запис для детальнішої
-                        інформації про себе
-                    </p>
-                    <Button onClick={gotoRegister}>Зареєструватись</Button>
+                    {auth.isAuth ? (
+                        <>
+                            <h5>Медитації тут і зараз</h5>
+                            <p>
+                                Медитація – це потужний засіб для зняття і управління стресом,
+                                оздоровча практика та звичка, яка допоможе знайти свій внутрішній
+                                спокій
+                            </p>
+                            <Button onClick={gotoMeditations}>Слухати</Button>
+                        </>
+                    ) : (
+                        <>
+                            <h5>Вперше на нашому сайті?</h5>
+                            <p>
+                                Зареєструйтесь або увійдіть в існуючий обліковий запис для
+                                детальнішої інформації про себе
+                            </p>
+                            <Button onClick={gotoRegister}>Зареєструватись</Button>
+                        </>
+                    )}
                 </Tile>
 
                 <Tile className={s.area3}>

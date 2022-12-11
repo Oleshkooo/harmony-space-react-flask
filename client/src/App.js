@@ -4,6 +4,8 @@ import { Toaster } from 'react-hot-toast'
 import MeditationsContextProvider from '@context/MeditationsContext'
 
 import RequireAuth from '@hoc/RequireAuth'
+import RequireAdmin from '@hoc/RequireAdmin'
+import useAuth from '@hooks/useAuth'
 
 import Sidebar from '@components/Sidebar'
 import Login from '@pages/other/Login'
@@ -15,9 +17,13 @@ import Articles from '@pages/Articles'
 import ArticlesExact from '@pages/ArticlesExact'
 import Meditations from '@pages/Meditations'
 import Chat from '@pages/Chat'
+import AdminChat from '@pages/AdminChat'
+import AdminChatList from '@pages/AdminChatList'
 import Hotline from '@pages/Hotline'
 
 const App = () => {
+    const auth = useAuth()
+
     return (
         <>
             <Toaster containerClassName="toaster" position="top-center" reverseOrder={false} />
@@ -44,9 +50,15 @@ const App = () => {
                 <Route
                     path="/chat"
                     element={
-                        <RequireAuth>
-                            <Chat />
-                        </RequireAuth>
+                        <RequireAuth>{auth.isAdmin === true ? <AdminChatList /> : <Chat />}</RequireAuth>
+                    }
+                />
+                <Route
+                    path="/chat/:id"
+                    element={
+                        <RequireAdmin>
+                            <AdminChat />
+                        </RequireAdmin>
                     }
                 />
 

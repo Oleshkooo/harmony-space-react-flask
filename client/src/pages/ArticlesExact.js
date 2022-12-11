@@ -12,7 +12,7 @@ import s from './articles.module.scss'
 const ArticlesExact = () => {
     const { id } = useParams()
 
-    const [article, setArticle] = useState(null)
+    const [article, setArticle] = useState({})
 
     const navigate = useNavigate()
     const location = useLocation()

@@ -7,7 +7,7 @@ const RequireAuth = ({ children }) => {
     const location = useLocation()
     const { isAuth } = useAuth()
 
-    if (!isAuth) {
+    if (isAuth === false) {
         // toast.error('Ви повинні увійти, щоб переглянути цю сторінку')
         return <Navigate to="/login" state={{ from: location }} />
     }

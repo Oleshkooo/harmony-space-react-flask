@@ -11,7 +11,7 @@ import limitString from '@utils/limitString'
 import s from './articles.module.scss'
 
 const Articles = () => {
-    const [articles, setArticles] = useState(null)
+    const [articles, setArticles] = useState([])
 
     const navigate = useNavigate()
     const location = useLocation()

@@ -25,7 +25,7 @@ const Meditations = () => {
             <div className={s.container}>
                 {globalAudio.meditations && globalAudio.meditations.map((item, index) => (
                     <div key={index} className={s.track}>
-                        <Tile dark={index === 0 ? true : false}>
+                        <Tile dark={index === 0 ? true : false} className={s.meditation}>
                             <h5>{item.title}</h5>
                             <p>{item.content}</p>
                         </Tile>

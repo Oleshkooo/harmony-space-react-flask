@@ -10,7 +10,6 @@ const APIContextProvider = ({ children }) => {
         const fetchData = async () => {
             const affirmation = await axios.get('/affirmation')
             const latestArticle = await axios.get('/articles/latest')
-            // console.log(affirmation.data, latestArticle.data)
             setApi({
                 affirmation: affirmation.data.affirmation,
                 latestArticle: latestArticle.data,

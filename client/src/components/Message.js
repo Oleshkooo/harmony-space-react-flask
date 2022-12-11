@@ -1,14 +1,22 @@
 import s from './message.module.scss'
 
-const Message = ({ dark = false, left = false, right = false, className = '', ...props }) => {
+const Message = ({ time, dark = false, isFromUser = false, renderTime = true, className = '', ...props }) => {
     const darkClass = dark ? s.dark : ''
-    const leftClass = left ? s.left : ''
-    const rightClass = right ? s.right : ''
+    const sideClass = isFromUser ? s.right : s.left
 
     return (
-        <div className={`${s.container} ${leftClass} ${rightClass}`}>
+        <div className={`${s.container} ${sideClass}`}>
             <div className={`${s.message} ${darkClass}`}>
                 {props.children}
+                {renderTime && (
+                    <p className={s.time}>
+                        {new Date(time).toLocaleTimeString('uk-UA', {
+                            hour12: false,
+                            hour: '2-digit',
+                            minute: '2-digit',
+                        })}
+                    </p>
+                )}
             </div>
         </div>
     )

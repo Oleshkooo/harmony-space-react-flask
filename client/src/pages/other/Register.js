@@ -78,6 +78,7 @@ const Register = () => {
         auth.setAuth(true)
         auth.setUserId(data.id)
         auth.setUsername(data.username)
+        auth.setAdmin(data.isAdmin)
         toast.success(data.success)
         navigate(from)
     }
@@ -102,16 +103,19 @@ const Register = () => {
                                 label="Ім'я користувача"
                                 placeholder="Введіть ім'я користувача"
                                 setState={setUsername}
+                                value={username}
                             />
                             <Input
                                 label="Email"
                                 placeholder="Введіть email"
                                 setState={setEmail}
+                                value={email}
                             />
                             <Input
                                 label="Пароль"
                                 placeholder="Введіть пароль"
                                 setState={setPassword}
+                                value={password}
                                 password
                             />
                         </div>

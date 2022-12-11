@@ -1,8 +1,8 @@
 import flask
-from flask_cors import CORS
 import time
 import datetime
 import requests
+from flask_cors import CORS
 from googletrans import Translator
 
 from Database import Database
@@ -11,174 +11,180 @@ from Socket import Socket
 
 class Server():
     def __init__(self):
-        # server
         self.app = flask.Flask(__name__)
         CORS(self.app)
 
-        # database
         self.db = Database()
-        self.db.createTables()
+        self.db.create_tables()
 
-        # sockets
         self.socket = Socket(self.app, self.db)
 
-        # data
-        self.indexData = {
-            'affirmation': None
-        }
-        self.fetchDay = None
+        self.affirmation = None
+        self.fetch_day = None
         self.translator = Translator()
 
-        # routes
-        self.app.add_url_rule('/', 'index', self.indexRoute, methods=['GET'])
-        self.app.add_url_rule('/affirmation', 'affirmation', self.affirmationRoute, methods=['GET'])
+        self.app.add_url_rule('/', 'index', self.index_route, methods=['GET'])
+        self.app.add_url_rule('/affirmation', 'affirmation', self.affirmation_route, methods=['GET'])
 
-        self.app.add_url_rule('/articles', 'articles', self.articlesRoute, methods=['GET'])
-        self.app.add_url_rule('/articles/<int:id>', 'articlesExact', self.articlesExactRoute, methods=['GET'])
-        self.app.add_url_rule('/articles/latest', 'articlesLatest', self.articlesLatestRoute, methods=['GET'])
+        self.app.add_url_rule('/articles', 'articles', self.articles_route, methods=['GET'])
+        self.app.add_url_rule('/articles/<int:id>', 'articlesExact', self.articles_exact_route, methods=['GET'])
+        self.app.add_url_rule('/articles/latest', 'articlesLatest', self.articles_latest_route, methods=['GET'])
 
-        self.app.add_url_rule('/meditations', 'meditations', self.meditationsRoute, methods=['GET'])
-        self.app.add_url_rule('/meditations/<int:id>', 'meditationsExact', self.meditationsExactRoute, methods=['GET'])
+        self.app.add_url_rule('/meditations', 'meditations', self.meditations_route, methods=['GET'])
+        self.app.add_url_rule('/meditations/<int:id>', 'meditationsExact', self.meditations_exact_route, methods=['GET'])
 
-        self.app.add_url_rule('/messagesExact/<int:id>', 'messages', self.messagesExactRoute, methods=['GET'])
+        self.app.add_url_rule('/messages/<int:id>', 'messages', self.messages_exact_route, methods=['GET'])
 
-        self.app.add_url_rule('/login', 'login', self.loginRoute, methods=['POST'])
-        self.app.add_url_rule('/register', 'register', self.registerRoute, methods=['POST'])
+        self.app.add_url_rule('/users/', 'users', self.users_route, methods=['GET'])
+        self.app.add_url_rule('/users/<int:id>', 'usersExact', self.users_exact_route, methods=['GET'])
 
-    # === === === === === === === === === ===
+        self.app.add_url_rule('/login', 'login', self.login_route, methods=['POST'])
+        self.app.add_url_rule('/register', 'register', self.register_route, methods=['POST'])
 
     def run(self):
         self.socket.run(self.app)
         self.app.run()
 
-    # === === === === === === === === === ===
-
-    def indexRoute(self):
+    def index_route(self):
         curDate = datetime.date.today().strftime("%B %d, %Y")
         curTime = time.strftime('%H:%M:%S', time.localtime())
         return f'{curDate}, {curTime} | Working'
 
-    def affirmationRoute(self):
+    def affirmation_route(self):
         return {
-            'affirmation': self.getAffirmation()
+            'affirmation': self.get_affirmation()
         }
 
-    def articlesRoute(self):
-        return self.db.getAllArticles()
+    def articles_route(self):
+        return self.db.get_all_articles()
 
-    def articlesExactRoute(self, id):
+    def articles_exact_route(self, id):
         error = {
             'error': 'Такої статті не існує'
         }
         if not isinstance(id, int):
             return error
 
-        amount = self.db.checkArticlesAmount()
+        amount = self.db.check_articles_amount()
         if id > amount:
             return error
 
-        return self.db.getArticleById(id)
+        return self.db.get_article_by_id(id)
 
-    def articlesLatestRoute(self):
-        return self.db.getLatestArticle()
-    
-    def meditationsRoute(self):
-        return self.db.getAllMeditations()
+    def articles_latest_route(self):
+        return self.db.get_latest_article()
 
-    def meditationsExactRoute(self, id):
+    def meditations_route(self):
+        return self.db.get_all_meditations()
+
+    def meditations_exact_route(self, id):
         error = {
             'error': 'Такої медитації не існує'
         }
         if not isinstance(id, int):
             return error
 
-        amount = self.db.checkMeditationsAmount()
+        amount = self.db.check_meditations_amount()
         if id > amount:
             return error
 
         return flask.send_file(f'./assets/meditations/{id}.mp3', mimetype='audio/mpeg')
 
-    def messagesExactRoute(self, id):
+    def messages_exact_route(self, id):
         error = {
             'error': 'Такої медитації не існує'
         }
         if not isinstance(id, int):
             return error
 
-        amount = self.db.checkUsersAmount()
+        amount = self.db.check_users_amount()
         if id > amount:
             return error
-        
-        return self.db.getAllMessages(id)
 
-    def loginRoute(self):
+        return self.db.get_all_messages(id)
+
+    def users_route(self):
+        return self.db.get_all_users()
+
+    def users_exact_route(self, id):
+        error = {
+            'error': 'Такого користувача не існує'
+        }
+        if not isinstance(id, int):
+            return error
+
+        amount = self.db.check_users_amount()
+        if id > amount:
+            return error
+
+        return self.db.get_user_by_id(id)
+
+    def login_route(self):
         req = flask.request.json
         username = req['username']
         password = req['password']
-        isUserExists = self.db.isUserExists(username)
+        is_user_exists = self.db.is_user_exists(username)
 
-        if not isUserExists:
+        if not is_user_exists:
             return {
                 'error': 'Такого користувача не існує'
             }
 
-        checkPassword = self.db.checkPassword(username, password)
+        check_password = self.db.check_password(username, password)
 
-        if not checkPassword:
+        if not check_password:
             return {
                 'error': 'Неправильний пароль'
             }
 
         return {
             'success': 'Вхід виконано успішно',
-            'id': self.db.getUserId(username),
-            'username': username
+            'id': self.db.get_user_id(username),
+            'username': username,
+            'isAdmin': self.db.is_user_admin(username)
         }
 
-    def registerRoute(self):
+    def register_route(self):
         req = flask.request.json
         username = req['username']
         password = req['password']
         email = req['email']
 
-        isUserExists = self.db.isUserExists(username)
-        if isUserExists:
+        is_user_exists = self.db.is_user_exists(username)
+        if is_user_exists:
             return {
                 'error': 'Користувач з таким іменем вже існує'
             }
-        
-        isEmailExists = self.db.isEmailExists(email)
-        if isEmailExists:
+
+        is_email_exists = self.db.is_email_exists(email)
+        if is_email_exists:
             return {
                 'error': 'Вказана пошта вже використовується'
             }
-         
-        if not self.db.createUser(username, password, email):
+
+        if not self.db.create_user(username, password, email):
             return {
                 'error': 'Виникла помилка при реєстрації'
             }
-        
+
         return {
             'success': 'Реєстрація виконана успішно',
-            'id': self.db.getUserId(username),
-            'username': username
+            'id': self.db.get_user_id(username),
+            'username': username,
+            'isAdmin': self.db.is_user_admin(username)
         }
 
-    # === === === === === === === === === ===
+    def get_affirmation(self):
+        current_day = datetime.date.today().strftime("%d")
 
-    def getAffirmation(self):
-        currentDay = datetime.date.today().strftime("%d")
-
-        if currentDay == self.fetchDay:
-            return self.indexData['affirmation']
+        if current_day == self.fetch_day:
+            return self.affirmation
 
         res = requests.get('https://www.affirmations.dev')
-        affirmationEng = res.json()['affirmation']
-        self.indexData['affirmation'] = self.translate(affirmationEng, 'uk')
-        self.fetchDay = currentDay
-        return self.indexData['affirmation']
-
-    # === === === === === === === === === ===
+        affirmation_eng = res.json()['affirmation']
+        self.affirmation = self.translate(affirmation_eng, 'uk')
+        self.fetch_day = current_day
+        return self.affirmation
 
     def translate(self, text, lang):
         return self.translator.translate(text, dest=lang).text.replace('.', '. ').replace('-', '- ')

@@ -14,7 +14,7 @@
     margin-bottom: $br-sm/1.5;
     border-radius: $br-sm;
     background: $white;
-    box-shadow: $shadow;
+    box-shadow: $shadow-medium;
     transition: $transition;
 
     // &:hover {
@@ -25,6 +25,10 @@
     //     box-shadow: $shadow-hover;
     //     transition: $transition;
     // }
+
+    .time {
+        font-size: $time;
+    }
 }
 
 .left {

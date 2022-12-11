@@ -61,6 +61,7 @@ const Login = () => {
         auth.setAuth(true)
         auth.setUserId(data.id)
         auth.setUsername(data.username)
+        auth.setAdmin(data.isAdmin)
         toast.success(data.success)
         navigate(from)
     }
@@ -85,12 +86,14 @@ const Login = () => {
                                 label="Ім'я користувача"
                                 placeholder="Введіть ім'я користувача"
                                 setState={setUsername}
+                                value={username}
                             />
                             <Input
                                 label="Пароль"
                                 placeholder="Введіть пароль"
                                 setState={setPassword}
                                 password
+                                value={password}
                             />
                         </div>
                         <div className={s.buttons}>

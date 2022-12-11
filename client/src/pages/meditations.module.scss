@@ -4,10 +4,13 @@
     padding: 0 $tiles-gap 2*$tiles-gap $tiles-gap;
 }
 
+.meditation {
+    cursor: auto;
+}
+
 .track {
     display: flex;
     flex-direction: row;
-    cursor: pointer;
 
     margin-top: $tiles-gap;
     gap: $tiles-gap/2.5;
