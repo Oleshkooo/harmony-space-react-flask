@@ -1,7 +1,7 @@
 import s from './tile.module.scss'
 
 const Tile = ({ className = '', dark = false, img = '', ...props }) => {
-    const darkStyle = dark ? s.dark : ''
+    const darkClass = dark ? s.dark : ''
 
     if (img) return (
         <div
@@ -15,7 +15,7 @@ const Tile = ({ className = '', dark = false, img = '', ...props }) => {
 
     return (
         <div
-            className={`${s.tile} ${darkStyle} ${className}`}
+            className={`${s.tile} ${darkClass} ${className}`}
             {...props}
         >
             {props.children}

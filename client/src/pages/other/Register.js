@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate, useLocation, Navigate } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
 
@@ -75,14 +75,19 @@ const Register = () => {
             return
         }
 
-        toast.success(data.success)
         auth.setAuth(true)
+        auth.setUserId(data.id)
         auth.setUsername(data.username)
+        toast.success(data.success)
         navigate(from)
     }
     const gotoLogin = () => navigate('/login', { state: { from: location.state?.from } })
 
     useOnEnter(handleSubmit)
+
+    if (auth.isAuth) {
+        return <Navigate to="/" state={{ message: 'Ви вже увійшли в обліковий запис' }} />
+    }
 
     return (
         <Layout className={s.login}>

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { toast } from 'react-hot-toast'
-import { Home, BookOpen, Headphones, CheckCircle, Info, LogIn, LogOut } from 'react-feather'
+import { Home, BookOpen, Headphones, MessageCircle, Info, LogIn, LogOut } from 'react-feather'
 
 import useAuth from '@hooks/useAuth'
 
@@ -23,6 +23,7 @@ const Sidebar = () => {
     const logOut = () => {
         const confirm = (t) => {
             auth.setAuth(false)
+            auth.clearData()
             navigate('/')
             toast.dismiss(t.id)
             toast.success('Ви вийшли з аккаунту')
@@ -58,10 +59,10 @@ const Sidebar = () => {
             isActive: current === '/meditations',
         },
         {
-            name: 'Тест',
-            icon: <CheckCircle />,
-            path: '/test',
-            isActive: current === '/test',
+            name: 'Чат',
+            icon: <MessageCircle />,
+            path: '/chat',
+            isActive: current === '/chat',
         },
         {
             name: 'Гаряча лінія',

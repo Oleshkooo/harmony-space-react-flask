@@ -58,9 +58,10 @@ const Login = () => {
             return
         }
 
-        toast.success(data.success)
         auth.setAuth(true)
+        auth.setUserId(data.id)
         auth.setUsername(data.username)
+        toast.success(data.success)
         navigate(from)
     }
     const gotoRegister = () => navigate('/register', { state: { from: location.state?.from } })

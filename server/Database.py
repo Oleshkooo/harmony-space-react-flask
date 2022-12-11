@@ -14,7 +14,8 @@ class Database():
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 username TEXT UNIQUE NOT NULL,
                 password TEXT NOT NULL,
-                email TEXT UNIQUE NOT NULL
+                email TEXT UNIQUE NOT NULL,
+                isAdmin INTEGER DEFAULT 0
             )
         ''')
         # articles
@@ -37,6 +38,17 @@ class Database():
                 date DATETIME DEFAULT CURRENT_TIMESTAMP
             )
         ''')
+        # chat
+        self.cur.execute('''
+            CREATE TABLE IF NOT EXISTS chat (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                userID INTEGER NOT NULL,
+                content VARCHAR NOT NULL,
+                isFromUser INTEGER DEFAULT 0,
+                date DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (userId) REFERENCES users(id)
+            )
+        ''')
 
         # trigger to delete all articles of user when user deleted
         self.cur.execute('''
@@ -55,6 +67,15 @@ class Database():
             BEGIN
                 SELECT RAISE(ABORT, 'There are no users with this id')
                 WHERE (SELECT id FROM users WHERE id = NEW.authorID) IS NULL;
+            END
+        ''')
+        # trigger to delete all messages of user when user deleted
+        self.cur.execute('''
+            CREATE TRIGGER IF NOT EXISTS delete_user
+            AFTER DELETE ON users
+            FOR EACH ROW
+            BEGIN
+                DELETE FROM chat WHERE userId = OLD.id;
             END
         ''')
         self.db.commit()
@@ -166,6 +187,41 @@ class Database():
         self.db.commit()
         return True
 
+    def getUserId(self, username):
+        self.cur.execute('SELECT id FROM users WHERE username = ?', [username])
+        return self.cur.fetchone()[0]
+
+    def checkUsersAmount(self):
+        self.cur.execute('SELECT COUNT(*) FROM users')
+        return self.cur.fetchone()[0]
+        # data = self.cur.fetchone()[0]
+        # return {
+        #     'amount': data
+        # }
+
+    # === === === === === === === === === ===
+
+    def getAllMessages(self, id):
+        self.cur.execute('SELECT * FROM chat WHERE userId = ? ORDER BY id DESC', [id])
+        data = self.cur.fetchall()
+        messages = []
+        for message in data:
+            messages.append(self.makeMessageObject(message))
+        return messages
+
+    def createMessage(self, userId, content, isFromUser):
+        self.cur.execute('INSERT INTO chat (userId, content, isFromUser) VALUES (?, ?, ?)', [userId, content, int(isFromUser)])
+        self.db.commit()
+    
+    def makeMessageObject(self, data):
+        return {
+            'id': data[0],
+            'userId': data[1],
+            'content': data[2],
+            'isFromUser': data[3],
+            'date': data[4]
+        }
+
     # === === === === === === === === === ===
 
     def addArticle(self, title, content, author):
@@ -176,9 +232,39 @@ class Database():
         self.cur.execute(query, params)
         self.db.commit()
 
+
+
 if __name__ == '__main__':
     db = Database()
     db.createTables()
+
+
+    # db.exec('''
+    #     INSERT INTO users (username, password, email, isAdmin)
+    #     VALUES (?, ?, ?, ?)
+    # ''', ['admin', 'admin', 'admin@gmail.com', 1])
+
+
+
+#     title = 'aaaaaaaaaaaaaaaa'
+
+#     content = """
+
+# """
+    # db.exec('''
+    #     INSERT INTO articles (title, content, authorID)
+    #     VALUES (?, ?, ?)
+    # ''', [title, content, 1])
+
+
+    title = 'Медитація будь-де | Під звуки дощу'
+    content = """
+
+"""
+    db.exec('''
+        INSERT INTO meditations (title, content)
+        VALUES (?, ?)
+    ''', [title, content])
 
 
 

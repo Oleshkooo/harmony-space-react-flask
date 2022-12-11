@@ -29,7 +29,6 @@ const ArticlesExact = () => {
             }
 
             const { data } = await axios.get(`/articles/${id}`)
-            // console.log(data)
 
             if (data?.error) {
                 navigate('/404', { state: { message } })
@@ -54,7 +53,7 @@ const ArticlesExact = () => {
                 {article &&
                     <Tile className={`${s.articles} ${s.articlesExact}`}>
                         <h3>{article.title}</h3>
-                        <p>{article.text}</p>
+                        <p>{article.content}</p>
                         <p>
                             {article.author},{' '}
                             {new Date(article.date).toLocaleDateString('uk-UA', {

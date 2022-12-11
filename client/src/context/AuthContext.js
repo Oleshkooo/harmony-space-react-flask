@@ -29,8 +29,20 @@ const AuthContextProvider = ({ children }) => {
         setUsernameState(value)
     }
 
+    const clearData = () => {
+        // Cookies.remove('isAuth')
+        // Cookies.remove('userId')
+        // Cookies.remove('username')
+        localStorage.removeItem('isAuth')
+        localStorage.removeItem('userId')
+        localStorage.removeItem('username')
+        setAuthState(false)
+        setUserIdState('')
+        setUsernameState('')
+    }
+
     return (
-        <AuthContext.Provider value={{ isAuth, setAuth, userId, setUserId, username, setUsername }}>
+        <AuthContext.Provider value={{ isAuth, setAuth, userId, setUserId, username, setUsername, clearData }}>
             {children}
         </AuthContext.Provider>
     )

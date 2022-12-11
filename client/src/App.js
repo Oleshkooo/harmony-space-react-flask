@@ -9,10 +9,12 @@ import Sidebar from '@components/Sidebar'
 import Login from '@pages/other/Login'
 import Register from '@pages/other/Register'
 import NotFound from '@pages/other/NotFound'
+
 import Main from '@pages/Main'
 import Articles from '@pages/Articles'
 import ArticlesExact from '@pages/ArticlesExact'
 import Meditations from '@pages/Meditations'
+import Chat from '@pages/Chat'
 import Hotline from '@pages/Hotline'
 
 const App = () => {
@@ -26,6 +28,9 @@ const App = () => {
                 <Route path="/hotline" element={<Hotline />} />
                 <Route path="/articles" element={<Articles />} />
                 <Route path="/articles/:id" element={<ArticlesExact />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+
                 <Route
                     path="/meditations"
                     element={
@@ -37,17 +42,14 @@ const App = () => {
                     }
                 />
                 <Route
-                    path="/test"
+                    path="/chat"
                     element={
                         <RequireAuth>
-                            <>
-                                <h1>Some test route</h1>
-                            </>
+                            <Chat />
                         </RequireAuth>
                     }
                 />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
+
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </>

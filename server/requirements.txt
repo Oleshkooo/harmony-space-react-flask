@@ -1,3 +1,4 @@
 flask
 flask_cors
+flask_socketio
 googletrans==4.0.0-rc1

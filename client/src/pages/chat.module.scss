@@ -1,0 +1,51 @@
+@import '@styles/variables';
+
+.container {
+    width: 100%;
+    height: 85vh;
+    display: flex;
+    justify-content: center;
+    
+    padding: 0 $tiles-gap 1.5*$tiles-gap $tiles-gap;
+}
+
+.chat {
+    padding: 0 $tiles-gap/3 $tiles-gap/3 $tiles-gap/3;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 70%;
+    height: 100%;
+
+    margin-top: $tiles-gap;
+
+    .messages {
+        padding: $tiles-gap/3 $tiles-gap/5 0 0;
+        width: 100%;
+        height: 90%;
+        display: flex;
+        flex-direction: column-reverse;
+        justify-content: flex-start;
+        overflow-y: auto;
+    }
+
+    .controls {
+        width: 100%;
+        height: 10%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: $tiles-gap/2.5;
+
+        .input {
+            width: 85%;
+            label {
+                display: none;
+            }
+        }
+
+        button {
+            width: 15%;
+        }
+    }
+}

@@ -6,6 +6,7 @@ import requests
 from googletrans import Translator
 
 from Database import Database
+from Socket import Socket
 
 
 class Server():
@@ -16,6 +17,10 @@ class Server():
 
         # database
         self.db = Database()
+        self.db.createTables()
+
+        # sockets
+        self.socket = Socket(self.app, self.db)
 
         # data
         self.indexData = {
@@ -35,12 +40,15 @@ class Server():
         self.app.add_url_rule('/meditations', 'meditations', self.meditationsRoute, methods=['GET'])
         self.app.add_url_rule('/meditations/<int:id>', 'meditationsExact', self.meditationsExactRoute, methods=['GET'])
 
+        self.app.add_url_rule('/messagesExact/<int:id>', 'messages', self.messagesExactRoute, methods=['GET'])
+
         self.app.add_url_rule('/login', 'login', self.loginRoute, methods=['POST'])
         self.app.add_url_rule('/register', 'register', self.registerRoute, methods=['POST'])
 
     # === === === === === === === === === ===
 
     def run(self):
+        self.socket.run(self.app)
         self.app.run()
 
     # === === === === === === === === === ===
@@ -90,6 +98,19 @@ class Server():
 
         return flask.send_file(f'./assets/meditations/{id}.mp3', mimetype='audio/mpeg')
 
+    def messagesExactRoute(self, id):
+        error = {
+            'error': 'Такої медитації не існує'
+        }
+        if not isinstance(id, int):
+            return error
+
+        amount = self.db.checkUsersAmount()
+        if id > amount:
+            return error
+        
+        return self.db.getAllMessages(id)
+
     def loginRoute(self):
         req = flask.request.json
         username = req['username']
@@ -110,6 +131,7 @@ class Server():
 
         return {
             'success': 'Вхід виконано успішно',
+            'id': self.db.getUserId(username),
             'username': username
         }
 
@@ -138,6 +160,7 @@ class Server():
         
         return {
             'success': 'Реєстрація виконана успішно',
+            'id': self.db.getUserId(username),
             'username': username
         }
 
